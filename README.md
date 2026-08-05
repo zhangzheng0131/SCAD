@@ -51,20 +51,20 @@ A complete example script `run_scad.ipynb` is provided in the repository. It dem
 Edit the configuration section in `run_scad.ipynb`:
 
 Fist of all, you need to download big data from google drive: 
-ST data: wget https://drive.google.com/file/d/1lk-un3yXyT4cM8gNCRcWE5ujgi5KHn6W/view?usp=sharing
+ST data: https://drive.google.com/file/d/1lk-un3yXyT4cM8gNCRcWE5ujgi5KHn6W/view?usp=sharing
 
-sc data: wget https://drive.google.com/file/d/1TywXKtjBq6UYGxlWW9NFRybd1Sfznwhb/view?usp=sharing
+sc data: https://drive.google.com/file/d/1TywXKtjBq6UYGxlWW9NFRybd1Sfznwhb/view?usp=sharing
 
-Others: from data folder or google drive, e.g.: wget https://drive.google.com/file/d/1f1xCALl_eUZ49eq5kQrzdsSNafgN2NcB/view?usp=sharing 
+Others: from data folder or google drive, e.g.: https://drive.google.com/file/d/1f1xCALl_eUZ49eq5kQrzdsSNafgN2NcB/view?usp=sharing 
 
-### 3. Run the pipeline example as shown in run_scad.ipynb
+### 3. Run the pipeline example 
 
 
 This will:
 - 1 Preprocess and embed both datasets
 -     (1) using TESLA to get sc and ST data with higher resolution (see example in tutorial_TESLA.ipynb)
 -     (2) using SpaGCN to obtain spatial domain annotations and cluster labels for spatial transcriptomics data (see example in tutorial_SpaGCN.ipynb)
-- 2 Train the VAE‑GMM model (3‑fold cross‑validation)
+- 2 Train the VAE‑GMM model (3‑fold cross‑validation) （as shown in run_scad.ipynb）
 - 3 Predict spatial coordinates for each spot
 - 4 Apply conformal prediction to detect aberrant spots
 - 5 Save results (predicted coordinates, aberrant labels, deconvolution scores, latent embeddings) in `OUTPUT_BASE/results/`
