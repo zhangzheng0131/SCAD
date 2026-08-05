@@ -1,12 +1,12 @@
 
-# SPADE: Detection of Spatially Aberrant Cells in Spatial Transcriptomics Data
+# SCAD: Spatially Conformal Aberrant Detection
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/)
 [![Paper](https://img.shields.io/badge/Paper-GPB-red.svg)](https://www.sciencedirect.com/journal/genomics-proteomics-and-bioinformatics)
 
 
-![Pipeline](pipeline.png)
+![Pipeline](fig/pipeline.png)
 
 **SCAD** is a computational framework designed to integrate single-cell RNA sequencing (scRNA-seq) and spatial transcriptomics (ST) data to quantitatively characterize and detect spatially aberrant cells. SCAD integrates scRNA-seq and spatial transcriptomics (ST) data through two independent autoencoders to generate latent embeddings for cells and spatial spots. Cell embeddings are modeled as cluster-aware latent representations using a Gaussian mixture model (GMM), where each component represents a distinct cell-type embedding. Each spot embedding is then decomposed into a weighted combination of GMM component centers, reflecting its underlying cellular composition. 
 SCAD further learns a spatial mapping from ST embeddings to their physical coordinates, enabling reconstruction of tissue architecture. Spatially aberrant spots are subsequently identified as outliers in this mapping using an uncertainty quantification framework.
