@@ -32,15 +32,15 @@ To run SPADE, you will need Python (3.8+) and the following dependencies:
 
 ### Install from source
 ```bash
-git clone https://github.com/sohu-123/SPADE.git
-cd SPADE
+git clone https://github.com/zhangzheng0131/SCAD.git
+cd SCAD
 pip install -r requirements.txt
 ```
 ---
 
 ## 🚀 Quick Start
 
-A complete example script `Example-SPADE.py` is provided in the repository. It demonstrates the full pipeline on PDAC (pancreatic ductal adenocarcinoma) data.
+A complete example script `run_scad.ipynb` is provided in the repository. It demonstrates the full pipeline on PDAC (pancreatic ductal adenocarcinoma) data.
 
 ### 1. Prepare your data
 - **scRNA‑seq**: AnnData object (cells × genes) with `.X` as expression matrix.
@@ -48,95 +48,226 @@ A complete example script `Example-SPADE.py` is provided in the repository. It d
 - **SVG list**: A list of spatially variable genes (e.g., from SpaGCN) to guide feature selection.
 
 ### 2. Configure paths
-Edit the configuration section in `Example-SPADE.py`:
-```python
-INPUT_ADATA_ST = "/path/to/your/enhanced_ST.h5ad"
-INPUT_ADATA_SC = "/path/to/your/scRNA.h5ad"
-INPUT_SVG_LIST = "/path/to/svg_list.csv"
-OUTPUT_BASE = "result/PDAC_final"
-```
+Edit the configuration section in `run_scad.ipynb`:
 
-### 3. Run the pipeline
-```bash
-python Example-SPADE.py
-```
+Fist of all, you need to download big data from google drive: 
+ST data: wget https://drive.google.com/file/d/1lk-un3yXyT4cM8gNCRcWE5ujgi5KHn6W/view?usp=sharing
+sc data: wget https://drive.google.com/file/d/1TywXKtjBq6UYGxlWW9NFRybd1Sfznwhb/view?usp=sharing
+
+### 3. Run the pipeline example as shown in run_scad.ipynb
+
 
 This will:
-- Preprocess and embed both datasets
-- Train the VAE‑GMM model (3‑fold cross‑validation)
-- Predict spatial coordinates for each spot
-- Apply conformal prediction to detect aberrant spots
-- Save results (predicted coordinates, aberrant labels, deconvolution scores, latent embeddings) in `OUTPUT_BASE/results/`
+- 1 Preprocess and embed both datasets
+-     (1) using TESLA to get sc and ST data with higher resolution (see example in tutorial_TESLA.ipynb)
+-     (2) using SpaGCN to obtain spatial domain annotations and cluster labels for spatial transcriptomics data (see example in tutorial_SpaGCN.ipynb)
+- 2 Train the VAE‑GMM model (3‑fold cross‑validation)
+- 3 Predict spatial coordinates for each spot
+- 4 Apply conformal prediction to detect aberrant spots
+- 5 Save results (predicted coordinates, aberrant labels, deconvolution scores, latent embeddings) in `OUTPUT_BASE/results/`
 
 ---
 
-## 📁 Output Files
 
-After running, the following files are created in the output directory:
-
-| File | Description |
-|------|-------------|
-| `adata_total.h5ad` | Combined AnnData with latent embeddings and predicted spatial coordinates |
-| `adata_sc.h5ad` / `adata_ST.h5ad` | Normalized single‑cell and ST data |
-| `adata_sc_keep.h5ad` | Filtered scRNA‑seq cells that localize within tissue (resolution="low") |
-| `trans_plan.csv` | Transport plan (if OT enabled) between cells and spots |
-| `cluster_score.csv` | Cell‑type contribution scores per spot |
-| `latent.csv` | Latent embeddings with batch labels |
-| `spot_info_PDAC_final.txt` | Spot‑level metadata including aberrant flag |
-| `eval_out_final.npz` | Coordinates, embeddings, and predictions for each cross‑validation fold |
-
----
 
 ## 📊 Usage Example (Code Snippet)
 
+### Model Training and Conformal Prediction Pipeline
+
+This section outlines the complete workflow for training the SCAD models across three cross-validation folds, performing conformal prediction, and aggregating the final results.
+
+#### Training Fold 1
+Initialize the model with specified hyperparameters, train on the first split of indices, evaluate to extract latent variables, and save the network parameters.
+
 ```python
-import scanpy as sc
-import numpy as np
-from SPADE import Model3, conformal_prediction
-
-# Load data
-adata_sc = sc.read("scRNA.h5ad")
-adata_st = sc.read("ST.h5ad")
-svg_list = pd.read_csv("svg.csv", index_col=0).index
-
-# Initialize model
-model = Model3(
+# %% Cell 2 - Train Model Fold 1
+print("=== Training Fold 1 ===")
+model1 = scad.Model3(
     resolution="low",
     batch_size=200,
     train_epoch=3000,
+    cut_steps=0.5,
     sf_coord=50,
     rad_cutoff=1.2,
     seed=1234,
     lambdacos=10,
     lambdaSWD=5,
     lambdalat=10,
+    lambdarec=0.1,
+    model_path=model_path,
+    data_path=data_path,
+    result_path=result_path,
+    ot=False,
     device="cpu"
 )
+K, cluster = model1.preprocess(svg_list, adata_sc, adata_ST, res=0.5)
+training_idx_st = np.array(splits[0][0])
+model1.train(training_idx_rna, training_idx_st)
+mu1, phi1, sigma1, z_A1, z_B1, m_A1, m_B1 = model1.eval2()
+val_idx1, test_idx1 = np.array(splits[0][1]), np.array(splits[0][2])
 
-# Preprocess and train
-K, clusters = model.preprocess(svg_list, adata_sc, adata_st)
-model.train(training_idx_rna, training_idx_st)
-
-# Evaluate and get embeddings
-mu, phi, sigma, z_A, z_B, m_A, m_B = model.eval2()
-
-# Detect aberrant spots
-aberrant, confidence, lambda_calib, pred_coords, true_coords = conformal_prediction(
-    true_coords=adata_st.obsm['spatial'],
-    z_B=z_B,
-    m_B=m_B,
-    calib_index=val_idx,
-    test_index=test_idx,
-    alpha=0.05,
-    k_neighbors=15
-)
+# Save parameters for Model 1
+torch.save({
+    'D_A': model1.D_A.state_dict(),
+    'D_B': model1.D_B.state_dict(),
+    'E_A': model1.E_A.state_dict(),
+    'E_B': model1.E_B.state_dict(),
+    'G_A': model1.G_A.state_dict(),
+    'G_B': model1.G_B.state_dict(),
+    'E_s': model1.E_s.state_dict()
+}, os.path.join(model_path, "model1.pth"))
 ```
 
----
+#### Training Fold 2
+Train the second fold using the identical architecture and hyperparameters, utilizing the second set of split indices, and save the resulting weights.
+
+```python
+# %% Cell 3 - Train Model Fold 2
+print("=== Training Fold 2 ===")
+model2 = scad.Model3(
+    resolution="low",
+    batch_size=200,
+    train_epoch=3000,
+    cut_steps=0.5,
+    sf_coord=50,
+    rad_cutoff=1.2,
+    seed=1234,
+    lambdacos=10,
+    lambdaSWD=5,
+    lambdalat=10,
+    lambdarec=0.1,
+    model_path=model_path,
+    data_path=data_path,
+    result_path=result_path,
+    ot=False,
+    device="cpu"
+)
+K, cluster = model2.preprocess(svg_list, adata_sc, adata_ST, res=0.5)
+training_idx_st = np.array(splits[1][0])
+model2.train(training_idx_rna, training_idx_st)
+mu2, phi2, sigma2, z_A2, z_B2, m_A2, m_B2 = model2.eval2()
+val_idx2, test_idx2 = np.array(splits[1][1]), np.array(splits[1][2])
+
+torch.save({
+    'D_A': model2.D_A.state_dict(),
+    'D_B': model2.D_B.state_dict(),
+    'E_A': model2.E_A.state_dict(),
+    'E_B': model2.E_B.state_dict(),
+    'G_A': model2.G_A.state_dict(),
+    'G_B': model2.G_B.state_dict(),
+    'E_s': model2.E_s.state_dict()
+}, os.path.join(model_path, "model2.pth"))
+```
+
+#### Training Fold 3
+Complete the cross-validation process by training the third fold with its respective split indices and saving the final set of model weights.
+
+```python
+# %% Cell 4 - Train Model Fold 3
+print("=== Training Fold 3 ===")
+model3 = scad.Model3(
+    resolution="low",
+    batch_size=200,
+    train_epoch=3000,
+    cut_steps=0.5,
+    sf_coord=50,
+    rad_cutoff=1.2,
+    seed=1234,
+    lambdacos=10,
+    lambdaSWD=5,
+    lambdalat=10,
+    lambdarec=0.1,
+    model_path=model_path,
+    data_path=data_path,
+    result_path=result_path,
+    ot=False,
+    device="cpu"
+)
+K, cluster = model3.preprocess(svg_list, adata_sc, adata_ST, res=0.5)
+training_idx_st = np.array(splits[2][0])
+model3.train(training_idx_rna, training_idx_st)
+mu3, phi3, sigma3, z_A3, z_B3, m_A3, m_B3 = model3.eval2()
+val_idx3, test_idx3 = np.array(splits[2][1]), np.array(splits[2][2])
+
+torch.save({
+    'D_A': model3.D_A.state_dict(),
+    'D_B': model3.D_B.state_dict(),
+    'E_A': model3.E_A.state_dict(),
+    'E_B': model3.E_B.state_dict(),
+    'G_A': model3.G_A.state_dict(),
+    'G_B': model3.G_B.state_dict(),
+    'E_s': model3.E_s.state_dict()
+}, os.path.join(model_path, "model3.pth"))
+```
+
+#### Conformal Prediction and Result Aggregation
+Apply conformal prediction to each fold's validation and test sets to identify spatial aberrations. Aggregate the results by summing the flags (flagging if detected in at least one fold) and merging the predicted coordinates based on their respective test/validation indices.
+
+```python
+# %% Cell 5 - Aggregate Results and Perform Conformal Prediction
+print("=== Performing Conformal Prediction ===")
+true_coord = adata_ST.obsm['spatial']
+
+final_aberrant1, final_confidence1, final_lambda1, pred_coords1, _ = scad.conformal_prediction(
+    true_coord, z_B1, m_B1, val_idx1, test_idx1, alpha=0.05)
+
+final_aberrant2, final_confidence2, final_lambda2, pred_coords2, _ = scad.conformal_prediction(
+    true_coord, z_B2, m_B2, val_idx2, test_idx2, alpha=0.05)
+
+final_aberrant3, final_confidence3, final_lambda3, pred_coords3, _ = scad.conformal_prediction(
+    true_coord, z_B3, m_B3, val_idx3, test_idx3, alpha=0.05)
+
+# Aggregate results from three folds (summing yields final determination; 
+# flagged as aberrant if detected in at least one fold)
+final_aberrant = final_aberrant1 + final_aberrant2 + final_aberrant3
+final_lambda = final_lambda1 + final_lambda2 + final_lambda3
+
+# Aggregate predicted coordinates: use Model 3 predictions as baseline, 
+# then replace with respective fold predictions based on test set indices
+final_predict = pred_coords3.clone()
+test_list1 = val_idx1.tolist() + test_idx1.tolist()
+test_list2 = val_idx2.tolist() + test_idx2.tolist()
+test_list3 = val_idx3.tolist() + test_idx3.tolist()
+final_predict[test_list1, :] = pred_coords1[test_list1, :]
+final_predict[test_list2, :] = pred_coords2[test_list2, :]
+final_predict[test_list3, :] = pred_coords3[test_list3, :]  # Already model3 values, kept for consistency
+```
+
+#### Saving Final Outputs
+Map the aggregated predictions and error metrics back to the original spatial transcriptomics object using index mapping. Export the observation metadata to a tab-separated file and save all intermediate evaluation variables in a compressed `.npz` format for downstream analysis.
+
+```python
+# Save results to the original ST object (note index mapping)
+adata_ST0 = sc.read_h5ad('data/adata_SCC_ST.h5ad')  # Replace with actual path
+mapping_TESLA = pd.read_csv('data/mapping_SCC.txt', sep='\t')
+mapping_TESLA.index = mapping_TESLA['ori_index']
+
+pred_error = np.zeros((adata_ST0.shape[0], 1))
+pred_error[:, 0] = np.sqrt(((final_predict - true_coord) ** 2).sum(axis=1))[mapping_TESLA.loc[list(range(666))]['target_index']]
+adata_ST0.obs['pred_error'] = pred_error
+
+pred_abb = np.zeros((adata_ST0.shape[0], 1))
+pred_abb[:, 0] = final_aberrant[mapping_TESLA.loc[list(range(666))]['target_index']]
+adata_ST0.obs['pred_abb'] = pred_abb
+
+adata_ST0.obs['nonconformityscore'] = final_lambda[mapping_TESLA.loc[list(range(666))]['target_index']]
+adata_ST0.obs.to_csv(os.path.join(result_path, 'spot_info_SCC.txt'), sep='\t')
+
+# Save all intermediate evaluation results
+np.savez(os.path.join(result_path, 'eval_out.npz'),
+         true_coord=true_coord,
+         z_B1=z_B1, m_B1=m_B1, val_idx1=val_idx1, test_idx1=test_idx1,
+         z_B2=z_B2, m_B2=m_B2, val_idx2=val_idx2, test_idx2=test_idx2,
+         z_B3=z_B3, m_B3=m_B3, val_idx3=val_idx3, test_idx3=test_idx3,
+         final_predict=final_predict, final_lambda=final_lambda)
+
+print("All results saved successfully.")
+```
+
 
 ## 📈 Performance Highlights
 
-- **Simulated mouse brain**: AUC = 0.991, AUPR = 8.1, recall = 90.5% with FPR < 5%.
+- **Simulated mouse brain**: AUC = 0.991, AUPR = 0.81, recall = 90.5% with FPR < 5%.
 - **Human SCC**: Identified 22 aberrant spots enriched in tumor‑specific keratin (TSK) regions and domains with high spatial variability. Detected genes (e.g., *EIF2AK1*, *TMSB15B*) associated with stress response and migration.
 - **Xenium breast cancer**: Detected 6,544 aberrant cells enriched at invasive fronts and DCIS regions, capturing biologically meaningful heterogeneity.
 - **State‑of‑the‑art comparison**: SPADE outperforms STALocator and scSpace in spatial mapping accuracy across multiple thresholds.
