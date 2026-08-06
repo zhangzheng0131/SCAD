@@ -273,15 +273,10 @@ We provide a comprehensive tutorial for benchmarking our method against baseline
 
 | File | Description |Instruction|
 | :--- | :--- |:--- |
-|[`MB_tutorial_TESLA.ipynb`](https://github.com/zhangzheng0131/SCAD/blob/main/compare_ipynb/MB_tutorial_TESLA.ipynb) ;
-[`MB_tutorial_SpaGCN.ipynb`](https://github.com/zhangzheng0131/SCAD/blob/main/compare_ipynb/MB_tutorial_SpaGCN.ipynb) ;
-[`simulation_SCAD.ipynb`](https://github.com/zhangzheng0131/SCAD/blob/main/compare_ipynb/simulation_SCAD.ipynb) | SCAD | The simulated data is generated from `simulation_SCAD.ipynb`|
-| [`simulation_CARD.ipynb`](https://github.com/zhangzheng0131/SCAD/blob/main/compare_ipynb/simulation_CARD.ipynb);
-[`metrics_CARD.ipynb`](https://github.com/zhangzheng0131/SCAD/blob/main/compare_ipynb/metrics_CARD.ipynb)
-| CARD |r based method|
+|[`MB_tutorial_TESLA.ipynb`](https://github.com/zhangzheng0131/SCAD/blob/main/compare_ipynb/MB_tutorial_TESLA.ipynb) ;[`MB_tutorial_SpaGCN.ipynb`](https://github.com/zhangzheng0131/SCAD/blob/main/compare_ipynb/MB_tutorial_SpaGCN.ipynb) ;[`simulation_SCAD.ipynb`](https://github.com/zhangzheng0131/SCAD/blob/main/compare_ipynb/simulation_SCAD.ipynb) | SCAD | The simulated data is generated from `simulation_SCAD.ipynb`|
+| [`simulation_CARD.ipynb`](https://github.com/zhangzheng0131/SCAD/blob/main/compare_ipynb/simulation_CARD.ipynb);[`metrics_CARD.ipynb`](https://github.com/zhangzheng0131/SCAD/blob/main/compare_ipynb/metrics_CARD.ipynb)| CARD |r based method|
 | [`simulation_Tangram.ipynb`](https://github.com/zhangzheng0131/SCAD/blob/main/compare_ipynb/simulation_Tangram.ipynb) | Tangram |python based method|
-| [`simulation_RCTD.ipynb`](https://github.com/zhangzheng0131/SCAD/blob/main/compare_ipynb/simulation_RCTD.ipynb) ;
-[`metrics_RCTD.ipynb`](https://github.com/zhangzheng0131/SCAD/blob/main/compare_ipynb/metrics_RCTD.ipynb)| RCTD |r based method|
+| [`simulation_RCTD.ipynb`](https://github.com/zhangzheng0131/SCAD/blob/main/compare_ipynb/simulation_RCTD.ipynb) ;[`metrics_RCTD.ipynb`](https://github.com/zhangzheng0131/SCAD/blob/main/compare_ipynb/metrics_RCTD.ipynb)| RCTD |r based method|
 | [`simulation_IF.ipynb`](https://github.com/zhangzheng0131/SCAD/blob/main/compare_ipynb/simulation_IF.ipynb) | Isolation Forest |python code|
 ---
 
