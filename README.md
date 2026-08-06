@@ -55,9 +55,9 @@ Fist of all, you need to download big data from google drive:
 
 - sc data: https://drive.google.com/file/d/1TywXKtjBq6UYGxlWW9NFRybd1Sfznwhb/view?usp=sharing
 
-- SVG list: svb-enhanced-scc.csv from data folder
+- SVG list: svb-enhanced-scc.csv from [data folder](https://github.com/zhangzheng0131/SCAD/blob/main/data/mapping_SCC.txt)
 
-Others: from or google drive, e.g. and the : https://drive.google.com/file/d/1f1xCALl_eUZ49eq5kQrzdsSNafgN2NcB/view?usp=sharing 
+- Others intermediate files: from or google drive, e.g. and the : https://drive.google.com/file/d/1f1xCALl_eUZ49eq5kQrzdsSNafgN2NcB/view?usp=sharing 
 
 ### 3. Run the pipeline example 
 
