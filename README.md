@@ -265,10 +265,20 @@ print("All results saved successfully.")
 ```
 
 
-## 📈 Performance Highlights
+## Benchmarking on Simulated Data
 
-We provide a comprehensive tutorial for benchmarking on simulated data, which includes the code for all compared methods. Please refer to `Compare.md` for details.
+We provide a comprehensive tutorial for benchmarking our method against baseline approaches on simulated data. The tutorial includes the complete code for all compared methods, along with a dedicated notebook for performance evaluation.
 
+### Tutorial Files
+
+| File | Description |
+| :--- | :--- |
+| [`simulation_scad.ipynb`](./simulation_scad.ipynb) | Our method (SCAD) |
+| [`simulation_CARD.ipynb`](./simulation_CARD.ipynb) | CARD |
+| [`simulation_Tangram.ipynb`](./simulation_Tangram.ipynb) | Tangram |
+| [`simulation_RCTD.ipynb`](./simulation_RCTD.ipynb) | RCTD |
+| [`simulation_IF.ipynb`](./simulation_IF.ipynb) | Isolation Forest |
+| [`compare_simulation.ipynb`](./compare_simulation.ipynb) | Calculation of performance metrics |
 ---
 
 
