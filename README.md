@@ -267,11 +267,7 @@ print("All results saved successfully.")
 
 ## 📈 Performance Highlights
 
-- **Simulated mouse brain**: AUC = 0.991, AUPR = 0.81, recall = 90.5% with FPR < 5%.
-- **Human SCC**: Identified 22 aberrant spots enriched in tumor‑specific keratin (TSK) regions and domains with high spatial variability. Detected genes (e.g., *EIF2AK1*, *TMSB15B*) associated with stress response and migration.
-- **Xenium breast cancer**: Detected 6,544 aberrant cells enriched at invasive fronts and DCIS regions, capturing biologically meaningful heterogeneity.
-- **State‑of‑the‑art comparison**: SCAD outperforms STALocator and scSpace in spatial mapping accuracy across multiple thresholds.
-
+We provide a comprehensive tutorial for benchmarking on simulated data, which includes the code for all compared methods. Please refer to `Compare.md` for details.
 
 ---
 
