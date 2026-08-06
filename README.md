@@ -51,11 +51,13 @@ A complete example script `run_scad.ipynb` is provided in the repository. It dem
 Edit the configuration section in `run_scad.ipynb`:
 
 Fist of all, you need to download big data from google drive: 
-ST data: https://drive.google.com/file/d/1lk-un3yXyT4cM8gNCRcWE5ujgi5KHn6W/view?usp=sharing
+- ST data: https://drive.google.com/file/d/1lk-un3yXyT4cM8gNCRcWE5ujgi5KHn6W/view?usp=sharing
 
-sc data: https://drive.google.com/file/d/1TywXKtjBq6UYGxlWW9NFRybd1Sfznwhb/view?usp=sharing
+- sc data: https://drive.google.com/file/d/1TywXKtjBq6UYGxlWW9NFRybd1Sfznwhb/view?usp=sharing
 
-Others: from data folder or google drive, e.g.: https://drive.google.com/file/d/1f1xCALl_eUZ49eq5kQrzdsSNafgN2NcB/view?usp=sharing 
+- SVG list: svb-enhanced-scc.csv from data folder
+
+Others: from or google drive, e.g. and the : https://drive.google.com/file/d/1f1xCALl_eUZ49eq5kQrzdsSNafgN2NcB/view?usp=sharing 
 
 ### 3. Run the pipeline example 
 
