@@ -272,20 +272,6 @@ print("All results saved successfully.")
 - **Xenium breast cancer**: Detected 6,544 aberrant cells enriched at invasive fronts and DCIS regions, capturing biologically meaningful heterogeneity.
 - **State‑of‑the‑art comparison**: SCAD outperforms STALocator and scSpace in spatial mapping accuracy across multiple thresholds.
 
----
-
-## 🧪 Customization
-
-### Adjusting conformal prediction
-- `alpha` – controls the nominal false discovery rate (default 0.05).
-- `k_neighbors` – number of neighbors for local variability estimation (default 15).
-- Increase `alpha` for stricter detection; decrease for more conservative.
-
-### Model hyperparameters
-Key parameters in `Model3`:
-- `resolution` – `"low"` (coarse mapping) or `"high"` (enhanced single‑cell resolution, requires optimal transport).
-- `train_epoch` – training epochs (default 3000; increase for larger datasets).
-- `lambdaGAN`, `lambdacos`, `lambdaAE`, `lambdaLA`, `lambdaSWD` – loss weights for different objectives.
 
 ---
 
