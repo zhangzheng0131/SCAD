@@ -19,8 +19,6 @@ SCAD further learns a spatial mapping from ST embeddings to their physical coord
 
 *   **Uncertainty-Calibrated Detection:** Unlike methods relying on arbitrary thresholds, SCAD uses conformal prediction to provide statistically principled detection with controlled false discovery rates.
 *   **Integration:** Seamlessly integrates scRNA-seq and Spatial Transcriptomics data.
-*   **Deconvolution:** Performs spatial deconvolution to resolve cell-type composition within spots.
-*   **Robustness:** Demonstrated superior performance in identifying biologically meaningful aberrant spots in both simulated and real-world datasets (e.g., Human Squamous Cell Carcinoma).
 
 ## 🛠️ Installation
 
