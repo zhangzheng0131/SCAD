@@ -47,8 +47,8 @@ A complete example script `run_scad.ipynb` is provided in the repository. It dem
 ### 2. Configure paths
 Edit the configuration section in `run_scad.ipynb`:
 
-Fist of all, you need to download big data from google drive: 
-- ST data: https://drive.google.com/file/d/1lk-un3yXyT4cM8gNCRcWE5ujgi5KHn6W/view?usp=sharing
+First, download the required data from Google Drive and place it into the `data` folder.
+- ST data (adata_SCC_ST.h5ad): https://drive.google.com/file/d/1lk-un3yXyT4cM8gNCRcWE5ujgi5KHn6W/view?usp=sharing
 
 - sc data: https://drive.google.com/file/d/1TywXKtjBq6UYGxlWW9NFRybd1Sfznwhb/view?usp=sharing
 
