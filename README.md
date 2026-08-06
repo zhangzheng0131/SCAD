@@ -59,7 +59,7 @@ First, download the required data from Google Drive and place it into the `data`
 
 This will:
  1. Preprocess 
--  (1) using TESLA to get ST data with higher resolution (see example in tutorial_TESLA.ipynb)
+-  (1) using TESLA to get ST data with higher resolution (see example in tutorial_TESLA.ipynb, the result is saved in enhanced_exp.h5ad)
 -  (2) using SpaGCN to obtain spatial variable genes (see example in tutorial_SpaGCN.ipynb)
 2. Train the VAE‑GMM model (step 2 to 5 is in run_scad.ipynb)
 3. Predict spatial coordinates for each spot
