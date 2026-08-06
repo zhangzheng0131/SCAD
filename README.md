@@ -17,14 +17,14 @@ SCAD further learns a spatial mapping from ST embeddings to their physical coord
 
 ## ✨ Key Features
 
-*   **Uncertainty-Calibrated Detection:** Unlike methods relying on arbitrary thresholds, SPADE uses conformal prediction to provide statistically principled detection with controlled false discovery rates.
+*   **Uncertainty-Calibrated Detection:** Unlike methods relying on arbitrary thresholds, SCAD uses conformal prediction to provide statistically principled detection with controlled false discovery rates.
 *   **Integration:** Seamlessly integrates scRNA-seq and Spatial Transcriptomics data.
 *   **Deconvolution:** Performs spatial deconvolution to resolve cell-type composition within spots.
 *   **Robustness:** Demonstrated superior performance in identifying biologically meaningful aberrant spots in both simulated and real-world datasets (e.g., Human Squamous Cell Carcinoma).
 
 ## 🛠️ Installation
 
-To run SPADE, you will need Python (3.8+) and the following dependencies:
+To run SCAD, you will need Python (3.8+) and the following dependencies:
 - Python ≥ 3.8
 - PyTorch ≥ 1.10
 - Scanpy, anndata, pandas, numpy, scikit‑learn, scipy
@@ -40,7 +40,7 @@ pip install -r requirements.txt
 
 ## 🚀 Quick Start
 
-A complete example script `run_scad.ipynb` is provided in the repository. It demonstrates the full pipeline on PDAC (pancreatic ductal adenocarcinoma) data.
+A complete example script `run_scad.ipynb` is provided in the repository. It demonstrates the full pipeline on  human squamous cell carcinoma (SCC) data.
 
 ### 1. Prepare your data
 - **scRNA‑seq**: AnnData object (cells × genes) with `.X` as expression matrix.
@@ -273,7 +273,7 @@ print("All results saved successfully.")
 - **Simulated mouse brain**: AUC = 0.991, AUPR = 0.81, recall = 90.5% with FPR < 5%.
 - **Human SCC**: Identified 22 aberrant spots enriched in tumor‑specific keratin (TSK) regions and domains with high spatial variability. Detected genes (e.g., *EIF2AK1*, *TMSB15B*) associated with stress response and migration.
 - **Xenium breast cancer**: Detected 6,544 aberrant cells enriched at invasive fronts and DCIS regions, capturing biologically meaningful heterogeneity.
-- **State‑of‑the‑art comparison**: SPADE outperforms STALocator and scSpace in spatial mapping accuracy across multiple thresholds.
+- **State‑of‑the‑art comparison**: SCAD outperforms STALocator and scSpace in spatial mapping accuracy across multiple thresholds.
 
 ---
 
