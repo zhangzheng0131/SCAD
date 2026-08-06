@@ -52,7 +52,7 @@ First, download the required data from Google Drive and place it into the `data`
 
 - sc data: https://drive.google.com/file/d/1TywXKtjBq6UYGxlWW9NFRybd1Sfznwhb/view?usp=sharing
 
-- Others intermediate files: e.g. SVG list (svb-enhanced-scc.csv from [data folder](https://github.com/zhangzheng0131/SCAD/blob/main/data/mapping_SCC.txt)) and the google drive folder : https://drive.google.com/file/d/1f1xCALl_eUZ49eq5kQrzdsSNafgN2NcB/view?usp=sharing 
+- Others intermediate files: e.g. SVG list (svg-enhanced-scc.csv from [data folder](https://github.com/zhangzheng0131/SCAD/blob/main/data/mapping_SCC.txt)) and the google drive folder : https://drive.google.com/file/d/1f1xCALl_eUZ49eq5kQrzdsSNafgN2NcB/view?usp=sharing 
 
 ### 3. Run the pipeline example 
 
