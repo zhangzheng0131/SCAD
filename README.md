@@ -25,8 +25,7 @@ SCAD further learns a spatial mapping from ST embeddings to their physical coord
 To run SCAD, you will need Python (3.8+) and the following dependencies:
 - Python ≥ 3.8
 - PyTorch ≥ 1.10
-- Scanpy, anndata, pandas, numpy, scikit‑learn, scipy
-- Other dependencies: tqdm, POT (for optimal transport), matplotlib, seaborn
+- Scanpy, anndata, pandas, numpy, scikit‑learn, scipy 
 
 ### Install from source
 ```bash
